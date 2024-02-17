@@ -23,9 +23,9 @@ window.onload = function(){
             if (digit == '0' && b == '0') return
             if (digit !='0' && digit!='.' && b == '0') b = digit
             else if ((digit != '.') || (digit == '.' && !b.includes(digit))) { 
-                b += digit
-                outputElement.innerHTML = b        
+                b += digit      
             }
+            outputElement.innerHTML = b   
         }
     }
     // установка колбек-функции для +/-
@@ -52,18 +52,30 @@ window.onload = function(){
     // установка колбек-функций для кнопок операций
     document.getElementById("btn_op_mult").onclick = function() { 
         if (a === '') return
+        if (selectedOperation) {
+            document.getElementById("btn_op_equal").onclick.call()
+        }
         selectedOperation = 'x'
     }
     document.getElementById("btn_op_plus").onclick = function() { 
         if (a === '') return
+        if (selectedOperation) {
+            document.getElementById("btn_op_equal").onclick.call()
+        }
         selectedOperation = '+'
     }
     document.getElementById("btn_op_minus").onclick = function() { 
         if (a === '') return
+        if (selectedOperation) {
+            document.getElementById("btn_op_equal").onclick.call()
+        }
         selectedOperation = '-'
     }
     document.getElementById("btn_op_div").onclick = function() { 
         if (a === '') return
+        if (selectedOperation) {
+            document.getElementById("btn_op_equal").onclick.call()
+        }
         selectedOperation = '/'
     }
     
