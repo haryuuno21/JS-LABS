@@ -28,6 +28,11 @@ window.onload = function(){
             outputElement.innerHTML = b   
         }
     }
+    // установка колбек-функции для %
+    document.getElementById("btn_op_percent").onclick = function() {
+        if (a === '') return
+        selectedOperation = '%'
+    }
     // установка колбек-функции для +/-
     document.getElementById("btn_op_sign").onclick = function()
     {
@@ -105,6 +110,9 @@ window.onload = function(){
                 break;
             case '/':
                 expressionResult = (+a) / (+b)
+                break;
+            case '%':
+                expressionResult = ((+a)/100) * (+b)
                 break;
         }
         
