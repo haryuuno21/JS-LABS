@@ -1,7 +1,15 @@
-.calculator{
+.body_style{
     background: #515151;
 }
+.calculator{
+  display:flex;
+  justify-content: center;
+  align-items: center;  
+  flex-direction: column;
+  height: 100vh;
+}
 /* опишем базовый стиль кнопки калькулятора */
+
 .my-btn { 
     margin-right: 5px;           /* задаем отступ от кнопки справа */
     margin-top: 5px;             /* задаем отступ от кнопки сверху*/
