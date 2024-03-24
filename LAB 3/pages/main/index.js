@@ -1,6 +1,6 @@
 import {ProductCardComponent} from "../../components/product-card/index.js";
 import {ProductPage} from "../product/index.js";
-
+import {InformerComponent} from "../../components/informer/index.js";
 
 export class MainPage {
     constructor(parent) {
@@ -20,7 +20,8 @@ export class MainPage {
     }
         
     getData() {
-        return [
+        return {
+            products:[
             {
                 id: 1,
                 src: "https://i.pinimg.com/originals/c9/ea/65/c9ea654eb3a7398b1f702c758c1c4206.jpg",
@@ -39,7 +40,22 @@ export class MainPage {
                 title: "Акция",
                 text: "Такой акции вы еще не видели 3"
             },
-        ]
+            ],
+            designInformers:[
+                {
+                    id: 1,
+                    title: "Новая психоделика",
+                    text: "Сюрреализм и максимально стимулирующие визуальные эффекты — вот что такое новая психоделика. Плюсы стиля: можно отпустить на волю воображение, смело сочетать стили и забыть о правилах эстетики.",
+                    buttonText: "Новая психоделика"
+                },
+                {
+                    id: 2,
+                    title: "Новая психоделика",
+                    text: "Сюрреализм и максимально стимулирующие визуальные эффекты — вот что такое новая психоделика. Плюсы стиля: можно отпустить на волю воображение, смело сочетать стили и забыть о правилах эстетики.",
+                    buttonText: "Новая психоделика"
+                }
+            ]
+        }
     }
         
     clickCard(e) {
@@ -54,11 +70,19 @@ export class MainPage {
         const html = this.getHTML()
         this.parent.insertAdjacentHTML('beforeend', html)
         
-        const data = this.getData()
-        data.forEach((item) => {
+        const dataProducts = this.getData().products
+        dataProducts.forEach((item) => {
             const productCard = new ProductCardComponent(this.pageRoot)
             productCard.render(item, this.clickCard.bind(this))
         })
+        
+        const dataDesignInformers = this.getData().designInformers
+        dataDesignInformers.forEach((item) => {
+            const designInformer = new InformerComponent(this.pageRoot)
+            designInformer.render(item)
+        })
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
     }
 }
 
