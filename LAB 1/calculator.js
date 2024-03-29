@@ -4,10 +4,11 @@ window.onload = function(){
     let b = ''
     let expressionResult = ''
     let selectedOperation = null
+    let lastOperation = ''
     
     // окно вывода результата
     outputElement = document.getElementById("result")
-    
+    historyElement = document.getElementById("history")
     // список объектов кнопок циферблата (id которых начинается с btn_digit_)
     digitButtons = document.querySelectorAll('[id ^= "btn_digit_"]')
     
@@ -58,28 +59,28 @@ window.onload = function(){
     document.getElementById("btn_op_mult").onclick = function() { 
         if (a === '') return
         if (selectedOperation) {
-            document.getElementById("btn_op_equal").onclick.call()
+            getResult()
         }
         selectedOperation = 'x'
     }
     document.getElementById("btn_op_plus").onclick = function() { 
         if (a === '') return
         if (selectedOperation) {
-            document.getElementById("btn_op_equal").onclick.call()
+            getResult()
         }
         selectedOperation = '+'
     }
     document.getElementById("btn_op_minus").onclick = function() { 
         if (a === '') return
         if (selectedOperation) {
-            document.getElementById("btn_op_equal").onclick.call()
+            getResult()
         }
         selectedOperation = '-'
     }
     document.getElementById("btn_op_div").onclick = function() { 
         if (a === '') return
         if (selectedOperation) {
-            document.getElementById("btn_op_equal").onclick.call()
+            getResult()
         }
         selectedOperation = '/'
     }
@@ -90,36 +91,53 @@ window.onload = function(){
         b = ''
         selectedOperation = ''
         expressionResult = ''
+        historyElement.innerHTML = ''
+        lastOperation = ''
         outputElement.innerHTML = 0
     }
     
     // кнопка расчёта результата
-    document.getElementById("btn_op_equal").onclick = function() { 
+    function getResult()
+    {
         if (a === '' || b === '' || !selectedOperation)
-            return
-            
-        switch(selectedOperation) { 
-            case 'x':
-                expressionResult = (+a) * (+b)
-                break;
-            case '+':
-                expressionResult = (+a) + (+b)
-                break;
-            case '-':
-                expressionResult = (+a) - (+b)
-                break;
-            case '/':
-                expressionResult = (+a) / (+b)
-                break;
-            case '%':
-                expressionResult = ((+a)/100) * (+b)
-                break;
-        }
+        return
         
-        a = expressionResult.toString()
-        b = ''
-        selectedOperation = null
-    
-        outputElement.innerHTML = a
+    switch(selectedOperation) { 
+        case 'x':
+            expressionResult = (+a) * (+b)
+            break;
+        case '+':
+            expressionResult = (+a) + (+b)
+            break;
+        case '-':
+            expressionResult = (+a) - (+b)
+            break;
+        case '/':
+            expressionResult = (+a) / (+b)
+            break;
+        case '%':
+            expressionResult = ((+a)/100) * (+b)
+            break;
     }
-    };
+    if(lastOperation === '')
+    {
+        historyElement.innerHTML += a + selectedOperation + b
+    }
+    else
+    {
+        historyElement.innerHTML += selectedOperation + b
+    }
+    a = expressionResult.toString()
+    b = ''
+    lastOperation = selectedOperation
+    selectedOperation = null
+
+    outputElement.innerHTML = a
+    }
+
+    document.getElementById("btn_op_equal").onclick = function() { 
+        getResult()
+        historyElement.innerHTML += '='
+        lastOperation = ''
+    }
+    };  
