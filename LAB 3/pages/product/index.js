@@ -1,6 +1,8 @@
 import {ProductComponent} from "../../components/product/index.js";
 import {BackButtonComponent} from "../../components/back-button/index.js";
 import {MainPage} from "../main/index.js";
+import {ajax} from "../../modules/ajax.js";
+import {urls} from "../../modules/urls.js";
 
 export class ProductPage {
     constructor(parent, id) {
@@ -9,14 +11,16 @@ export class ProductPage {
     }
 
     getData() {
-        return {
-            id: 1,
-            src: "https://i.pinimg.com/originals/c9/ea/65/c9ea654eb3a7398b1f702c758c1c4206.jpg",
-            title: `Акция ${this.id}`,
-            text: "Такой акции вы еще не видели"
-        }
+        ajax.post(urls.getUserInfo(this.id), (data) => {
+            this.renderData(data.response)
+        })
     }
 
+    renderData(item) {
+        const product = new ProductComponent(this.pageRoot)
+        product.render(item[0])
+    }
+    
     get pageRoot() {
         return document.getElementById('product-page')
     }
@@ -41,9 +45,7 @@ export class ProductPage {
     
         const backButton = new BackButtonComponent(this.pageRoot)
         backButton.render(this.clickBack.bind(this))
-    
-        const data = this.getData()
-        const stock = new ProductComponent(this.pageRoot)
-        stock.render(data)
+        
+        this.getData()
     }
 }
