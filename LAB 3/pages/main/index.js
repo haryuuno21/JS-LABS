@@ -1,9 +1,11 @@
 import {ProductCardComponent} from "../../components/product-card/index.js";
 import {ProductPage} from "../product/index.js";
-import {InformerComponent} from "../../components/informer/index.js";
+import {Filter} from "../../components/filter/index.js"
+
 import {ajax} from "../../modules/ajax.js";
 import {urls} from "../../modules/urls.js";
 import {groupId} from "../../modules/consts.js";
+
 
 export class MainPage {
     constructor(parent) {
@@ -22,8 +24,8 @@ export class MainPage {
         )
     }
         
-    getData() {
-        ajax.post(urls.getGroupMembers(groupId), (data) => {
+    getData(filter) {
+        ajax.post(urls.getGroupMembers(groupId,filter), (data) => {
         this.renderData(data.response.items)
     })
 }
@@ -46,8 +48,9 @@ export class MainPage {
         this.parent.innerHTML = ''
         const html = this.getHTML()
         this.parent.insertAdjacentHTML('beforeend', html)
-
-        this.getData()
+        this.getData('')
+        const filter = new Filter(this.pageRoot)
+        filter.render()
     }
 }
 
