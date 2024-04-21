@@ -1,7 +1,6 @@
 export class Filter {
     constructor(parent) {
-        this.parent = parent;
-        this.filter = ''
+        this.parent = parent
     }
 
     getHTML() {
@@ -18,9 +17,27 @@ export class Filter {
             `
         )
     }
+
+    getFilter() {
+        return this.filter
+    }
     
-    render() {
+    addListenerToRadioAll(listener) {
+        document
+        .getElementById(`radioAll`)
+        .addEventListener("focus", listener)
+    }
+    
+    addListenerToRadioModer(listener) {
+        document
+        .getElementById(`radioModers`)
+        .addEventListener("focus", listener)
+    }
+
+    render(listenerToModers,listenerToAll) {
         const html = this.getHTML()
         this.parent.insertAdjacentHTML('beforeend', html);
+        this.addListenerToRadioAll(listenerToAll)
+        this.addListenerToRadioModer(listenerToModers)
     }
 }

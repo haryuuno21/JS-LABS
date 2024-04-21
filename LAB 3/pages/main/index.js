@@ -8,8 +8,10 @@ import {groupId} from "../../modules/consts.js";
 
 
 export class MainPage {
+
     constructor(parent) {
-        this.parent = parent;
+        this.parent = parent
+        this.filter = ''
     }
     
     get pageRoot() {
@@ -24,11 +26,11 @@ export class MainPage {
         )
     }
         
-    getData(filter) {
-        ajax.post(urls.getGroupMembers(groupId,filter), (data) => {
+    getData() {
+        ajax.post(urls.getGroupMembers(groupId,this.filter), (data) => {
         this.renderData(data.response.items)
     })
-}
+    }
         
     clickCard(e) {
         const cardId = e.target.dataset.id
@@ -38,19 +40,41 @@ export class MainPage {
     }
 
     renderData(items) {
+        this.delAllCards()
         items.forEach((item) => {
             const productCard = new ProductCardComponent(this.pageRoot)
             productCard.render(item, this.clickCard.bind(this))
         })
     }
 
+    delAllCards(){
+        const items = Array.prototype.slice.call(document.getElementsByClassName('card'))
+        if(items!=null)
+        {
+            items.forEach((item) => {
+                item.remove()
+            });
+        }
+
+    }
+
+    changeFilterToModers() {
+        this.filter = 'managers'
+        this.getData()
+    }
+
+    changeFilterToAll() {
+        this.filter = ''
+        this.getData()
+    }
+
     render() {
         this.parent.innerHTML = ''
         const html = this.getHTML()
         this.parent.insertAdjacentHTML('beforeend', html)
-        this.getData('')
         const filter = new Filter(this.pageRoot)
-        filter.render()
+        filter.render(this.changeFilterToModers.bind(this),this.changeFilterToAll.bind(this))
+        this.getData()
     }
 }
 
